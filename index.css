@@ -1,0 +1,82 @@
+* {
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    background-color: lightblue;
+  }
+  
+  body {
+    padding: 5% 20%;
+    text-align: center;
+    align-items: center;
+  }
+  
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  input {
+    margin: 2% 0;
+    width: 50%;
+  }
+  
+  form button {
+    width: 25%;
+    margin: 2% 0 0 26.5%;
+  }
+  
+  .title-and-author {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2%;
+    height: 5vh;
+    background: rgb(217, 217, 217);
+  }
+  
+  .book-list {
+    border: 1px solid black;
+  }
+  
+  .title-and-author:nth-child(even) {
+    background-color: white;
+  }
+  
+  header nav {
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+  }
+  
+  header div {
+    display: flex;
+  }
+  
+  header a {
+    text-decoration: none;
+    list-style: none;
+    align-self: center;
+    padding: 0 15px;
+  }
+  
+  #a-border {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+  }
+  
+  .contact,
+  .addbooks {
+    display: none;
+  }
+  
+  .popup {
+    display: none;
+    font-size: 40px;
+  }
+  
