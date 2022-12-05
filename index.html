@@ -1,15 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="index.css" />
-  <title>Awesome books with ES6</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Awesome Books</title>
+  </head>
 
+  <body>
+    <header>
+      <nav>
+        <h3>Awesome Books</h3>
+        <div>
+          <a href="#show-books" ><li class="list">List</li></a>
+          <a href="# add-book"  id="a-border"><li class="add-new ">Add New</li></a>
+          <a href="#contact" ><li class="see-contact"> Contact</li></a>
+        </div>
+      </nav>
+      <p class="date+time">November 30, 2022</p>
+    </header>
+    <span class="popup">No books to display, please add a book</span>
 
-  <script src="index.js"></script>
-</body>
+    <div id="show-books" class="booksdata">
+      <h1>All awesome books</h1>
+      <ul class="book-list "></ul>
+    </div>
+
+    <div id="add-book" class="addbooks">
+      <h2>Add a new book</h2>
+      <form action="#">
+        <input class="title" type="text" placeholder="Title" required />
+        <input class="author" type="text" placeholder="Author" required />
+        <button class="addbook" type="button">Add</button>
+      </form>
+    </div>
+
+    <section id="contact" class="contact">
+      <h2>Contact information</h2>
+      <p>
+        Do have any questions or you just want to say "Hello"? You can reach out
+        to us!
+      </p>
+
+      <ul>
+        <li>Our e-mail: awesomebooks@gmail.com</li>
+        <li>Our phone number: (212) 253-0810</li>
+        <li>Our address: 555 5th Ave, New York, NY 10017</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Copyright Awesome Books 2022</p>
+    </footer>
+
+    <script src="newfeature.js"></script>
+  </body>
 </html>
