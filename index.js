@@ -1,91 +1,93 @@
-"use strict";
+const Title = document.querySelector('.title');
+const author = document.querySelector('.author');
+const registeredBooks = document.querySelector('.book-list');
+const addButton = document.querySelector('.addbook');
+const popup = document.querySelector('.popup');
 
-import { addBooks, deleteBook } from "./Module/ui.js";
-
-import { Title, author, registeredBooks } from "./Module/ui.js";
-import { DateTime } from "./Module/luxon.js";
-// const Title = document.querySelector(".title");
-/* eslint-disable no-unused-vars */
-// const date = new Date();
-const showDateAndTime = document.querySelector(".date-and-time");
-const ListMenu = document.querySelector(".list");
-const AddMenu = document.querySelector(".add");
-const ContactMenu = document.querySelector(".contactmenu");
-const addButton = document.querySelector(".addbook");
-
-const setTime = () => {
-  showDateAndTime.innerHTML = DateTime.now().toLocaleString(
-    DateTime.DATETIME_MED_WITH_SECONDS
-  );
-};
-setInterval(setTime, 1000);
+let Books = [];
 
 class Book {
   constructor(title, author) {
     this.title = title;
     this.author = author;
   }
+
+  static addBooks() {
+    registeredBooks.innerHTML = '';
+    for (let i = 0; i < Books.length; i += 1) {
+      registeredBooks.innerHTML += `
+      <div class="title-and-author"> 
+        <p class="Title">"${Books[i].title}" by  ${Books[i].author}</p>
+        <button class="button" onclick="Book.remove(${i})">remove</button>
+      </div>
+
+     `;
+      Title.value = '';
+      author.value = '';
+      Title.focus();
+    }
+  }
+  // remove
+
+  static remove(index) {
+    Books.splice(index, 1);
+    Book.addBooks();
+    localStorage.setItem('Books', JSON.stringify(Books));
+  }
 }
 
-let Books = [];
-
 window.onload = () => {
-  if (registeredBooks.innerHTML === "") {
-    document.querySelector(".emptymsg").style.display = "block";
-    registeredBooks.style.border = "none";
+  if (localStorage.getItem('Books')) {
+    Books = JSON.parse(localStorage.getItem('Books'));
+
+    popup.style.display = 'none';
+    Book.addBooks();
   } else {
-    document.querySelector(".emptymsg").style.display = "none";
+    popup.style.display = 'block';
   }
-  if (localStorage.getItem("Books")) {
-    Books = JSON.parse(localStorage.getItem("Books"));
-    registeredBooks.style.border = "1px solid black";
-    document.querySelector(".emptymsg").style.display = "none";
-  }
-  addBooks(Books);
+
+  // Book.addBooks();
 };
 
-//add
+// add
 
-addButton.addEventListener("click", (e) => {
-  if (Title.value === "" || author.value === "") {
-    e.preventDefault();
-  } else {
-    const book = new Book(Title.value, author.value);
-    Books.push(book);
-    addBooks(Books);
-    localStorage.setItem("Books", JSON.stringify(Books));
-    document.querySelector(".emptymsg").style.display = "none";
-    registeredBooks.style.border = "1px solid black";
-  }
+addButton.addEventListener('click', () => {
+  const book = new Book(Title.value, author.value);
+  Books.push(book);
+  Book.addBooks();
+  localStorage.setItem('Books', JSON.stringify(Books));
+  window.alert('book added successfully!');
 });
 
-//remove
+const listMenu = document.querySelector('.list');
+const addMenu = document.querySelector('.add-new');
+const contactMenu = document.querySelector('.see-contact');
 
-document.querySelector(".booksdata").addEventListener("click", (e) => {
-  if (!localStorage.getItem("Books")) {
-    document.querySelector(".emptymsg").style.display = "block";
-    registeredBooks.style.border = "none";
-  } else {
-    Books.splice(e.target.id, 1);
-
-    localStorage.setItem("Books", JSON.stringify(Books));
-    deleteBook(e.target);
-  }
+listMenu.addEventListener('click', () => {
+  document.querySelector('.list').style.textDecoration = 'underline';
+  document.querySelector('.booksdata').style.display = 'block';
+  document.querySelector('.addbooks').style.display = 'none';
+  document.querySelector('.contact').style.display = 'none';
+  document.querySelector('.add-new').style.textDecoration = 'none';
+  document.querySelector('.see-contact').style.textDecoration = 'none';
+  // popup.style.display = 'none';
+});
+addMenu.addEventListener('click', () => {
+  document.querySelector('.add-new').style.textDecoration = 'underline';
+  document.querySelector('.booksdata').style.display = 'none';
+  document.querySelector('.addbooks').style.display = 'block';
+  document.querySelector('.contact').style.display = 'none';
+  document.querySelector('.see-contact').style.textDecoration = 'none';
+  document.querySelector('.list').style.textDecoration = 'none';
+  // popup.style.display = 'none';
 });
 
-ListMenu.addEventListener("click", () => {
-  document.querySelector(".booksdata").style.display = "block";
-  document.querySelector(".addbooks").style.display = "none";
-  document.querySelector(".contact").style.display = "none";
-});
-AddMenu.addEventListener("click", () => {
-  document.querySelector(".booksdata").style.display = "none";
-  document.querySelector(".addbooks").style.display = "block";
-  document.querySelector(".contact").style.display = "none";
-});
-
-ContactMenu.addEventListener("click", () => {
-  document.querySelector(".booksdata").style.display = "none";
-  document.querySelector(".addbooks").style.display = "none";
-  document.querySelector(".contact").style.display = "block";
+contactMenu.addEventListener('click', () => {
+  document.querySelector('.see-contact').style.textDecoration = 'underline';
+  document.querySelector('.booksdata').style.display = 'none';
+  document.querySelector('.addbooks').style.display = 'none';
+  document.querySelector('.contact').style.display = 'block';
+  document.querySelector('.add-new').style.textDecoration = 'none';
+  document.querySelector('.list').style.textDecoration = 'none';
+  // popup.style.display = 'none';
 });
