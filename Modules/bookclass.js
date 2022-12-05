@@ -1,12 +1,9 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-restricted-globals */
 class Book {
   constructor(title, author) {
     this.title = title;
     this.author = author;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   storeBook(book) {
     // add a book to local storage
     localStorage.setItem('books', JSON.stringify(book));
