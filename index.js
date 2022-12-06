@@ -1,91 +1,55 @@
-"use strict";
+import { DateTime } from './modules/luxon.min.js';
+import Book from './modules/bookclass.js';
+import pageFunctionality from './modules/ui_controller.js';
 
-import { addBooks, deleteBook } from "./Module/ui.js";
-
-import { Title, author, registeredBooks } from "./Module/ui.js";
-import { DateTime } from "./Module/luxon.js";
-// const Title = document.querySelector(".title");
-/* eslint-disable no-unused-vars */
-// const date = new Date();
-const showDateAndTime = document.querySelector(".date-and-time");
-const ListMenu = document.querySelector(".list");
-const AddMenu = document.querySelector(".add");
-const ContactMenu = document.querySelector(".contactmenu");
-const addButton = document.querySelector(".addbook");
-
-const setTime = () => {
-  showDateAndTime.innerHTML = DateTime.now().toLocaleString(
-    DateTime.DATETIME_MED_WITH_SECONDS
-  );
-};
-setInterval(setTime, 1000);
-
-class Book {
-  constructor(title, author) {
-    this.title = title;
-    this.author = author;
-  }
+const getBooks = JSON.parse(localStorage.getItem('books'));
+let bookList = [];
+if (getBooks !== null) {
+  bookList = getBooks;
 }
 
-let Books = [];
+// create a book every time the add book btn is clicked.
+document.addEventListener('submit', (e) => {
+  e.preventDefault();
+  let title = document.getElementById('title').value;
+  let authorInput = document.getElementById('author').value;
 
-window.onload = () => {
-  if (registeredBooks.innerHTML === "") {
-    document.querySelector(".emptymsg").style.display = "block";
-    registeredBooks.style.border = "none";
-  } else {
-    document.querySelector(".emptymsg").style.display = "none";
-  }
-  if (localStorage.getItem("Books")) {
-    Books = JSON.parse(localStorage.getItem("Books"));
-    registeredBooks.style.border = "1px solid black";
-    document.querySelector(".emptymsg").style.display = "none";
-  }
-  addBooks(Books);
-};
+  const newBook = new Book.Book(title, authorInput); // create new book object
+  bookList.push(newBook);
 
-//add
-
-addButton.addEventListener("click", (e) => {
-  if (Title.value === "" || author.value === "") {
-    e.preventDefault();
-  } else {
-    const book = new Book(Title.value, author.value);
-    Books.push(book);
-    addBooks(Books);
-    localStorage.setItem("Books", JSON.stringify(Books));
-    document.querySelector(".emptymsg").style.display = "none";
-    registeredBooks.style.border = "1px solid black";
-  }
+  // send book to local storage
+  newBook.storeBook(bookList);
+  title = '';
+  authorInput = '';
 });
 
-//remove
+// dynamically showing book in the UI
+const bookShelf = document.querySelector('.book-shelf');
+bookShelf.innerHTML += bookList
+  .map((item) => `
+          <div class="compactment">
+        <ul class="booklist">
+          <li class="title">${item.title}</li>
+          <li class="by">BY</li>
+          <li class="author">${item.author}</li>
+        </ul>
+        <button type="button" class="remove-btn">Remove</button>
+      </div>
+      <hr class="divider" />`)
+  .join('');
 
-document.querySelector(".booksdata").addEventListener("click", (e) => {
-  if (!localStorage.getItem("Books")) {
-    document.querySelector(".emptymsg").style.display = "block";
-    registeredBooks.style.border = "none";
-  } else {
-    Books.splice(e.target.id, 1);
-
-    localStorage.setItem("Books", JSON.stringify(Books));
-    deleteBook(e.target);
-  }
+const removeBtn = document.querySelectorAll('.remove-btn');
+removeBtn.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    const takeOut = new Book.Book(bookList[index].title, bookList[index].author);
+    takeOut.removeBook(takeOut.title);
+  });
 });
 
-ListMenu.addEventListener("click", () => {
-  document.querySelector(".booksdata").style.display = "block";
-  document.querySelector(".addbooks").style.display = "none";
-  document.querySelector(".contact").style.display = "none";
-});
-AddMenu.addEventListener("click", () => {
-  document.querySelector(".booksdata").style.display = "none";
-  document.querySelector(".addbooks").style.display = "block";
-  document.querySelector(".contact").style.display = "none";
-});
+// add current day and time to page using luxon module
+const currDate = document.querySelector('.date');
+const dt = DateTime.now();
+const today = dt.toLocaleString(DateTime.DATETIME_MED);
+currDate.innerHTML = `${today}`;
 
-ContactMenu.addEventListener("click", () => {
-  document.querySelector(".booksdata").style.display = "none";
-  document.querySelector(".addbooks").style.display = "none";
-  document.querySelector(".contact").style.display = "block";
-});
+pageFunctionality.pageFunctionality();
